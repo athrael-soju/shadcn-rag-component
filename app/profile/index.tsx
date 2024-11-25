@@ -2,7 +2,6 @@
 
 import { motion } from 'framer-motion';
 import { User, Calendar, Globe } from 'lucide-react';
-import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
 import { Button } from '@/components/ui/button';
@@ -31,9 +30,6 @@ interface ProfileProps {
 }
 
 export function Profile({ onClose }: ProfileProps) {
-  const router = useRouter();
-
-  // State variables for form fields
   const [name, setName] = useState('');
   const [gender, setGender] = useState('male');
   const [dateOfBirth, setDateOfBirth] = useState('');
