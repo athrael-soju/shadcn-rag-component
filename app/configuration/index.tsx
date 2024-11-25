@@ -1,5 +1,3 @@
-// Configuration.tsx
-
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -28,6 +26,7 @@ interface ConfigurationCarouselProps {
 
 export function Configuration({ onClose }: ConfigurationCarouselProps) {
   const [currentStep, setCurrentStep] = useState(0);
+  const [visitedSteps, setVisitedSteps] = useState<number[]>([0]); // Initialize with step 0 as visited
 
   const formMethods = useForm<ConfigurationFormData>({
     resolver: zodResolver(configurationSchema),
@@ -46,6 +45,9 @@ export function Configuration({ onClose }: ConfigurationCarouselProps) {
       if (currentStep < steps.length - 1) {
         const nextStep = currentStep + 1;
         setCurrentStep(nextStep);
+        setVisitedSteps((prev) => [
+          ...Array.from(new Set([...prev, nextStep])),
+        ]);
       }
     }
   };
@@ -86,7 +88,9 @@ export function Configuration({ onClose }: ConfigurationCarouselProps) {
           <Stepper
             currentStep={currentStep}
             setCurrentStep={(step) => {
-              setCurrentStep(step);
+              if (visitedSteps.includes(step)) {
+                setCurrentStep(step);
+              }
             }}
             isStepComplete={isStepComplete}
           />
