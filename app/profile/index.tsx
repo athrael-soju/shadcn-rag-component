@@ -31,7 +31,7 @@ interface ProfileProps {
 }
 
 export function Profile({ onClose }: ProfileProps) {
-  const router = useRouter();
+  // const router = useRouter();
 
   // State variables for form fields
   const [name, setName] = useState('');
