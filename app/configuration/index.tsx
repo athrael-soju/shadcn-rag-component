@@ -28,8 +28,6 @@ interface ConfigurationCarouselProps {
 
 export function Configuration({ onClose }: ConfigurationCarouselProps) {
   const [currentStep, setCurrentStep] = useState(0);
-  const [visitedSteps, setVisitedSteps] = useState<number[]>([0]);
-  const [isSetupCompleted, setIsSetupCompleted] = useState(false);
 
   const formMethods = useForm<ConfigurationFormData>({
     resolver: zodResolver(configurationSchema),
@@ -48,9 +46,6 @@ export function Configuration({ onClose }: ConfigurationCarouselProps) {
       if (currentStep < steps.length - 1) {
         const nextStep = currentStep + 1;
         setCurrentStep(nextStep);
-        setVisitedSteps((prev) => Array.from(new Set([...prev, nextStep])));
-      } else {
-        setIsSetupCompleted(true);
       }
     }
   };
@@ -92,7 +87,6 @@ export function Configuration({ onClose }: ConfigurationCarouselProps) {
             currentStep={currentStep}
             setCurrentStep={(step) => {
               setCurrentStep(step);
-              setVisitedSteps((prev) => [...new Set([...prev, step])]);
             }}
             isStepComplete={isStepComplete}
           />
@@ -111,9 +105,13 @@ export function Configuration({ onClose }: ConfigurationCarouselProps) {
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             transition={{ duration: 0.2 }}
-            className="w-full"            
+            className="w-full"
           >
-            <Button onClick={onClose} className="w-full" disabled={!allStepsCompleted}>
+            <Button
+              onClick={onClose}
+              className="w-full"
+              disabled={!allStepsCompleted}
+            >
               Save & Return Home
             </Button>
           </motion.div>

@@ -37,7 +37,20 @@ export const StepForm = ({
   handleNextStep,
   handlePreviousStep,
 }: StepFormProps) => {
-  const { control, formState } = formMethods;
+  const { control, watch, formState } = formMethods;
+
+  // Watch all fields in the current step for changes
+  const watchedFields = watch(
+    Object.keys(steps[currentStep].options) as Array<
+      keyof ConfigurationFormData
+    >
+  );
+
+  // Check if all required fields for the current step are filled
+  const isCurrentStepValid = Object.values(watchedFields).every(
+    (value) => value !== undefined && value !== '' // Ensure each field has a valid value
+  );
+
   return (
     <motion.div
       key={currentStep}
@@ -100,7 +113,7 @@ export const StepForm = ({
           </Button>
           <Button
             onClick={handleNextStep}
-            disabled={currentStep === steps.length - 1} 
+            disabled={!isCurrentStepValid || currentStep === steps.length - 1} // Disable if step is not valid
           >
             <ArrowRight className="ml-2 size-4" />
             Next
